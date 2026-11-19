@@ -1,0 +1,6 @@
+{
+  "name": "SportIQ AI",
+  "description": "Train Smarter. Move Better. Perform Stronger. Real-time AI sports biomechanics analysis, MediaPipe pose tracking, and Gemini personal training coach.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

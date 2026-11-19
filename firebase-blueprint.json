@@ -1,0 +1,196 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Athlete profile, training preferences, and gamification progress.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "age": {
+          "type": "integer"
+        },
+        "fitnessLevel": {
+          "type": "string",
+          "enum": ["beginner", "intermediate", "advanced"]
+        },
+        "preferredExercises": {
+          "type": "array"
+        },
+        "workoutGoals": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "weeklyTrainingTarget": {
+          "type": "integer"
+        },
+        "dailyStreak": {
+          "type": "integer"
+        },
+        "lastWorkoutDate": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "bestSquats": {
+          "type": "integer"
+        },
+        "bestPushups": {
+          "type": "integer"
+        },
+        "bestLunges": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "age",
+        "fitnessLevel",
+        "preferredExercises",
+        "workoutGoals",
+        "weeklyTrainingTarget",
+        "dailyStreak",
+        "lastWorkoutDate",
+        "bestSquats",
+        "bestPushups",
+        "bestLunges",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "WorkoutSession": {
+      "title": "WorkoutSession",
+      "description": "Recorded pose-analysis workout session with rep counts, scores, and biomechanical summary.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "exercise": {
+          "type": "string",
+          "enum": ["squats", "pushups", "lunges"]
+        },
+        "reps": {
+          "type": "integer"
+        },
+        "incompleteReps": {
+          "type": "integer"
+        },
+        "durationSeconds": {
+          "type": "integer"
+        },
+        "performanceScore": {
+          "type": "integer"
+        },
+        "avgConfidence": {
+          "type": "number"
+        },
+        "feedbackSummary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "formNotes": {
+          "type": "array"
+        },
+        "minAngle": {
+          "type": "number"
+        },
+        "maxAngle": {
+          "type": "number"
+        },
+        "avgAlignment": {
+          "type": "number"
+        },
+        "isDemo": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "userId",
+        "exercise",
+        "reps",
+        "incompleteReps",
+        "durationSeconds",
+        "performanceScore",
+        "avgConfidence",
+        "feedbackSummary",
+        "formNotes",
+        "minAngle",
+        "maxAngle",
+        "avgAlignment",
+        "isDemo",
+        "createdAt"
+      ]
+    },
+    "CoachMessage": {
+      "title": "CoachMessage",
+      "description": "Persisted AI Personal Trainer conversation message.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "assistant"]
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "role", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Owner-only athlete profile and personal best records."
+    },
+    "/users/{userId}/workouts/{workoutId}": {
+      "schema": { "$ref": "#/entities/WorkoutSession" },
+      "description": "Owner-only workout analysis sessions."
+    },
+    "/users/{userId}/coachMessages/{messageId}": {
+      "schema": { "$ref": "#/entities/CoachMessage" },
+      "description": "Owner-only AI coach message history."
+    }
+  }
+}
